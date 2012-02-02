@@ -5,7 +5,7 @@
 <script type="text/javascript">
 	now.receiveUpdate = function(galaxy) {	
 		console.log("Received update.");
-		$('#content').html(galaxy);
+		$('#content').html(galaxy[0].ships);
 	};
 
   now.ready(function(){

@@ -50,3 +50,11 @@ everyone.now.joinGame = function(msg){
     console.log(msg);
 	everyone.now.receiveUpdate(galaxy);
 }
+
+setInterval(function() {
+	console.log("Update turn.");
+	for (var i = 0; i < galaxy.length; i++) {
+		galaxy[i].ships += galaxy[i].production;		 
+	}
+	everyone.now.receiveUpdate(galaxy);
+}, 2500);
