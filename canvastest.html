@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 		<script type="text/javascript" src="http://localhost:8080/nowjs/now.js"></script>	
         <style>
             body {
@@ -15,7 +16,7 @@
         <script>
 
 			
-		window.onload = function() {
+		$(document).ready(function() {
   			now.ready(function(){
 			    now.joinGame("IGX me up!");
 			});
@@ -123,7 +124,7 @@
                 //     }
                 // }
                 
-            };
+            });
         </script>
     </head>
     <body onmousedown="return false;">
