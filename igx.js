@@ -80,7 +80,7 @@ var fleets = [
 
 var fs = require('fs');
 var httpServer = require('http').createServer(function(req, response){ 
-	fs.readFile('index.html', function(err, data) {
+	fs.readFile('canvastest.html', function(err, data) {
 	response.writeHead(200, {'Content-Type':'text/html'});
 	response.write(data);
 	response.end();
