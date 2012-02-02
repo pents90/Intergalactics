@@ -2,6 +2,6 @@
   "name": "Intergalactics",
   "version": "0.0.1",
   "dependencies": {
-    "nowjs": "0.8.0"
+    "now": "0.8.0"
   }
 }
