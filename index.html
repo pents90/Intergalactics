@@ -3,19 +3,18 @@
 <script type="text/javascript" src="http://localhost:8080/nowjs/now.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-  console.log("LOG TEST");
+	now.receiveUpdate = function(galaxy) {	
+		console.log("Received update.");
+		$('#content').html(galaxy);
+	};
+
   now.ready(function(){
     // "Hello World!" will print on server
-	console.log("SENDING!");
-    now.logStuff("Hello World!");
+	console.log("Logging in...");
+    now.joinGame("IGX me up!");
   });
 
-  $(document).ready(function() {
-  now.blam = function() {	
-	console.log("RECEIVED.");
-	$('#content').html('BLAM!');
-  };
-});
+
 </script>
 </head>
 <body>
