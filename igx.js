@@ -2,28 +2,28 @@ var galaxy = [
 {name: 'A',
 ships: 20,
 production: 10,
-owner: 'Matt2000',
+owner: 1,
 x: 15,
 y: 8}
 ,
 {name: 'B',
 ships: 10,
 production: 12,
-owner: 'Pents90',
+owner: 0,
 x: 10,
 y: 2}
 ,
 {name: 'C',
 ships: 5,
 production: 1,
-owner: 'Pents90',
+owner: 0,
 x: 3,
 y: 7}
 ,
 {name: 'D',
 ships: 22,
 production: 4,
-owner: 'Matt2000',
+owner: 1,
 x: 9,
 y: 11}
 ];
