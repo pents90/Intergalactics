@@ -1,5 +1,8 @@
 var TURN_SPEED = 2000;
 var FLEET_SPEED = 0.2;
+var NEUTRAL = -1;
+var GALAXY_SIZE = 16;
+var PLANET_NAMES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 var galaxy = [
 {name: 'A',
@@ -30,6 +33,34 @@ owner: 1,
 x: 9,
 y: 11}
 ];
+
+// Create galaxy
+new function() {
+	galaxy = [];
+	for (var i = 0; i < 26; i++) {
+		var name = PLANET_NAMES.charAt(i);
+		var production = Math.floor(Math.random() * 11);
+		var ships = Math.floor(Math.random() * 11);
+		var x, y;
+		do {
+			x = Math.floor(Math.random() * GALAXY_SIZE);
+			y = Math.floor(Math.random() * GALAXY_SIZE);
+			var conflict = false;
+			for (var j = 0; j < i; j++) {
+				if (galaxy[j].x == x && galaxy[j].y == y) {
+					conflict = true;
+				}
+			}
+		} while (conflict);
+		galaxy.push({name: name, ships: ships, production: production, owner: NEUTRAL, x: x, y: y});
+	}
+	// Set up home planets
+	for (var i = 0; i < 2; i++) {
+		galaxy[i].ships = 20;
+		galaxy[i].production = 10;
+		galaxy[i].owner = i;
+	}
+}();
 
 console.log(galaxy);
 
@@ -67,8 +98,11 @@ everyone.now.joinGame = function(msg){
 }
 
 everyone.now.sendFleet = function(fromPlanet, toPlanet, ships) {
-	// todo - check for fleet owner
+	// todo - check for fleet owner other than just neutral	
 	var source = galaxy[fromPlanet];
+	if (source.owner == NEUTRAL) {
+		return;
+	}
 	var destination = galaxy[toPlanet];
 	var sent = Math.min(ships, source.ships);
 	fleets.push({source: fromPlanet, destination: toPlanet, owner: fromPlanet.owner, ships: sent, x:source.x, y:source.y});
@@ -81,7 +115,9 @@ setInterval(function() {
 	// Planets produce
 	if (turn % 20 == 0) {
 		for (var i = 0; i < galaxy.length; i++) {
-			galaxy[i].ships += galaxy[i].production;		 
+			if (galaxy[i].owner != NEUTRAL) {
+				galaxy[i].ships += galaxy[i].production;		 
+			}
 		}
 	}
 	// Fleets move
