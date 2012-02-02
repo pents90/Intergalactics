@@ -50,6 +50,8 @@
                 x: 9,
                 y: 11}
                 ];
+
+                var selectedPlanets = [];
                 
                 canvasSize = 600;
                 grid = 16;
@@ -76,7 +78,7 @@
                         var metrics = context.measureText(planet.ships);
                         context.fillText(planet.ships, (planet.x+1)*squaresize - metrics.width, (planet.y+1)*squaresize - 2);
                     }
-                    if (planet.selected) {
+                    if (selectedPlanets.indexOf(planet) > -1) {
                         context.fillStyle = "#888888";
                         context.beginPath();
                         context.rect(planet.x * squaresize, planet.y * squaresize, squaresize, squaresize);
@@ -91,10 +93,17 @@
                     for (i=0; i<galaxy.length; i++) {
                         var planet = galaxy[i];
                         if (actualkey == planet.name) {
-                            console.log("Found planet: "+planet.name);
-                            planet.selected = !planet.selected;
+                            if (selectedPlanets.length < 2) {
+                                selectedPlanets.push(planet);
+                            }
+                            // planet.selected = !planet.selected;
                         } else {
-                            planet.selected = false;
+                            // planet.selected = false;
+                        }
+                        if (selectedPlanets.length == 2) {
+                            var numShips = prompt("Number of ships to send.");
+                            console.log("Send "+numShips+" to "+actualkey);
+                            selectedPlanets = [];
                         }
                     }
                     drawGalaxy();
