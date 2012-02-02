@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <style>
+            body {
+                margin: 0px;
+                padding: 0px;
+            }
+            
+            #myCanvas {
+                border: 1px solid #9C9898;
+            }
+        </style>
+        <script>
+            window.onload = function(){
+                var canvas = document.getElementById("myCanvas");
+                var context = canvas.getContext("2d");
+                var centerX = canvas.width / 2;
+                var centerY = canvas.height / 2;
+                var radius = 70;
+
+                var colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00"];
+
+                var galaxy = [
+                {name: 'A',
+                ships: 20,
+                production: 10,
+                owner: 1,
+                x: 15,
+                y: 8}
+                ,
+                {name: 'B',
+                ships: 10,
+                production: 12,
+                owner: 0,
+                x: 10,
+                y: 2}
+                ,
+                {name: 'C',
+                ships: 5,
+                production: 1,
+                owner: 0,
+                x: 3,
+                y: 7}
+                ,
+                {name: 'D',
+                ships: 22,
+                production: 4,
+                owner: 1,
+                x: 9,
+                y: 11}
+                ];
+                
+                canvasSize = 600;
+                grid = 16;
+                minPlanetSize = 5;
+                maxPlanetSize = 15;
+                squaresize = canvasSize/grid;
+
+                var drawPlanet = function(planet) {
+                    radius = 10;
+                    color = colors[planet.owner];
+                    centerX = planet.x * squaresize + (squaresize/2);
+                    centerY = planet.y * squaresize + (squaresize/2);
+                    context.beginPath();
+                    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+                    context.fillStyle = color;
+                    context.fill();
+                    context.lineWidth = 1;
+                    context.strokeStyle = "black";
+                    context.stroke();
+                    context.fillStyle = "#000000";
+                    context.fillText(planet.name, (planet.x)*squaresize + 2, (planet.y)*squaresize + 10);
+                    if (planet.ships > 0) {
+                        context.fillStyle = "#000000";
+                        var metrics = context.measureText(planet.ships);
+                        context.fillText(planet.ships, (planet.x+1)*squaresize - metrics.width, (planet.y+1)*squaresize - 2);
+                    }
+                    if (planet.selected) {
+                        context.fillStyle = "#888888";
+                        context.beginPath();
+                        context.rect(planet.x * squaresize, planet.y * squaresize, squaresize, squaresize);
+                        context.stroke();
+                    }
+                };
+
+                function handleKey(e){
+                    var unicode=e.keyCode? e.keyCode : e.charCode
+                    var actualkey=String.fromCharCode(unicode).toUpperCase();
+                    console.log(actualkey);
+                    for (i=0; i<galaxy.length; i++) {
+                        var planet = galaxy[i];
+                        if (actualkey == planet.name) {
+                            console.log("Found planet: "+planet.name);
+                            planet.selected = !planet.selected;
+                        } else {
+                            planet.selected = false;
+                        }
+                    }
+                    drawGalaxy();
+                }
+                document.onkeypress=handleKey;
+
+                var drawGalaxy = function() {
+                    context.beginPath();
+                    context.fillStyle = "#FFFFFF";
+                    context.rect(0, 0, canvasSize, canvasSize);
+                    context.fill();
+                    for (i=0; i<galaxy.length; i++) {
+                        var planet = galaxy[i];
+                        drawPlanet(planet);
+                    }
+                }
+
+                drawGalaxy();
+
+                // for (y=0; y<grid; y++) {
+                //     for (x=0; x<grid; x++) {
+                //         drawPlanet(x, y, Math.random()*(maxPlanetSize-minPlanetSize)+minPlanetSize, "#8ED6FF");
+                //     }
+                // }
+                
+            };
+        </script>
+    </head>
+    <body onmousedown="return false;">
+        <canvas id="myCanvas" width="600" height="600">
+        </canvas>
+    </body>
+</html>
