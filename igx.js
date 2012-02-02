@@ -65,22 +65,15 @@ new function() {
 console.log(galaxy);
 
 var turn = 0;
-var fleets = [
-{
-	source:1,
-	destination:0,
-	owner:0,
-	ships:30,
-	x:10,
-	y:2
-}
-];
+var fleets = [];
+
+var users = [];
 
 ////
 
 var fs = require('fs');
 var httpServer = require('http').createServer(function(req, response){ 
-	fs.readFile('index.html', function(err, data) {
+	fs.readFile('canvastest.html', function(err, data) {
 	response.writeHead(200, {'Content-Type':'text/html'});
 	response.write(data);
 	response.end();
@@ -95,18 +88,34 @@ var everyone = nowjs.initialize(httpServer);
 
 everyone.now.joinGame = function(msg){
     console.log(msg);
+	users.push(this.user.clientId);
+	var userNum = getUserNum(this.user.clientId);
+	console.log("User joined: " + this.user.clientId + "-> " + userNum);
+	everyone.now.setUserNum(userNum);
 	everyone.now.receiveUpdate(galaxy);
 }
 
+var getUserNum = function(id) {
+	var userNum = -1;
+	for (var i = 0; i < users.length; i++) {
+		if (users[i] == id) {
+			userNum = i;
+		}
+	}
+	return userNum;
+}
+
 everyone.now.sendFleet = function(fromPlanet, toPlanet, ships) {
+	var userNum = getUserNum(this.user.clientId);
+	console.log("Fleet received: " + fromPlanet + " -> " + toPlanet + ": " + ships + "(user " + userNum + ")");
 	// todo - check for fleet owner other than just neutral	
 	var source = galaxy[fromPlanet];
-	if (source.owner == NEUTRAL) {
+	if (source.owner == NEUTRAL || source.owner != userNum) {
 		return;
 	}
 	var destination = galaxy[toPlanet];
 	var sent = Math.min(ships, source.ships);
-	fleets.push({source: fromPlanet, destination: toPlanet, owner: fromPlanet.owner, ships: sent, x:source.x, y:source.y});
+	fleets.push({source: fromPlanet, destination: toPlanet, owner: source.owner, ships: sent, x:source.x, y:source.y});
 	source.ships -= sent;
 }
 
