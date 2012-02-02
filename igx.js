@@ -87,7 +87,8 @@ var httpServer = require('http').createServer(function(req, response){
 	});
 });
 console.log("( ( I N T E R G A L A C T I C S ) )");
-httpServer.listen(8080);
+var port = process.env.PORT || 8080;
+httpServer.listen(port);
 
 var nowjs = require("now");
 var everyone = nowjs.initialize(httpServer);
